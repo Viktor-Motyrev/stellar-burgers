@@ -3,12 +3,10 @@ import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
 
 export const BurgerConstructor: FC = () => {
-  /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
+  // TODO: взять переменные constructorItems, orderRequest и orderModalData из стора
   const constructorItems = {
-    bun: {
-      price: 0
-    },
-    ingredients: []
+    bun: null as unknown as TConstructorIngredient | null,
+    ingredients: [] as TConstructorIngredient[]
   };
 
   const orderRequest = false;
@@ -29,8 +27,6 @@ export const BurgerConstructor: FC = () => {
       ),
     [constructorItems]
   );
-
-  return null;
 
   return (
     <BurgerConstructorUI
