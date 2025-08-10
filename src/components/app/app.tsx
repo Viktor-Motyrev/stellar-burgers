@@ -9,30 +9,90 @@ import { NotFound404 } from '@pages';
 import { IngredientDetails } from '@components';
 import { OrderInfo } from '@components';
 import { Feed } from '@pages';
+import { IngredientModal } from '@components';
 import '../../index.css';
 import styles from './app.module.css';
 
 import { AppHeader } from '@components';
 import { Routes, Route } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '../../services/store';
+import { fetchIngredients } from '../../services/slices/ingredientsSlice';
+import { getUser } from '../../services/slices/userSlice';
+import { resetConstructor } from '../../services/slices/constructorSlice';
+import ProtectedRoute from '../protected-route/protected-route';
 
-const App = () => (
-  <div className={styles.app}>
-    <AppHeader />
-    <Routes>
-      <Route path='/' element={<ConstructorPage />} />
-      <Route path='/feed' element={<Feed />} />
-      <Route path='/login' element={<Login />} />
-      <Route path='/register' element={<Register />} />
-      <Route path='/forgot-password' element={<ForgotPassword />} />
-      <Route path='/reset-password' element={<ResetPassword />} />
-      <Route path='/profile' element={<Profile />} />
-      <Route path='/profile/orders' element={<ProfileOrders />} />
-      <Route path='*' element={<NotFound404 />} />
-      <Route path='/ingredients/:id' element={<IngredientDetails />} />
-      <Route path='/feed/:number' element={<OrderInfo />} />
-      <Route path='/profile/orders/:number' element={<OrderInfo />} />
-    </Routes>
-  </div>
-);
+const App = () => {
+  const dispatch = useAppDispatch();
+  const { user, isAuthChecked } = useAppSelector((state) => state.user);
+
+  useEffect(() => {
+    dispatch(fetchIngredients());
+    dispatch(getUser());
+  }, [dispatch]);
+
+  // Сброс конструктора при неудачной авторизации
+  useEffect(() => {
+    if (isAuthChecked && !user) {
+      dispatch(resetConstructor());
+    }
+  }, [isAuthChecked, user, dispatch]);
+
+  return (
+    <div className={styles.app}>
+      <AppHeader />
+      <Routes>
+        <Route path='/' element={<ConstructorPage />} />
+        <Route path='/feed' element={<Feed />} />
+        <Route
+          path='/login'
+          element={
+            <ProtectedRoute onlyUnAuth>
+              <Login />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path='/register'
+          element={
+            <ProtectedRoute onlyUnAuth>
+              <Register />
+            </ProtectedRoute>
+          }
+        />
+        <Route path='/forgot-password' element={<ForgotPassword />} />
+        <Route path='/reset-password' element={<ResetPassword />} />
+        <Route
+          path='/profile'
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path='/profile/orders'
+          element={
+            <ProtectedRoute>
+              <ProfileOrders />
+            </ProtectedRoute>
+          }
+        />
+        <Route path='*' element={<NotFound404 />} />
+        <Route path='/ingredients/:id' element={<IngredientDetails />} />
+        <Route path='/feed/:number' element={<OrderInfo />} />
+        <Route
+          path='/profile/orders/:number'
+          element={
+            <ProtectedRoute>
+              <OrderInfo />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+      <IngredientModal />
+    </div>
+  );
+};
 
 export default App;

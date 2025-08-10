@@ -5,6 +5,7 @@ export * from './burger-ingredient';
 export * from './burger-ingredients';
 export * from './feed-info';
 export * from './ingredient-details';
+export * from './ingredient-modal';
 export * from './ingredients-category';
 export * from './modal';
 export * from './order-card';

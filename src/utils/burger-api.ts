@@ -19,7 +19,8 @@ export const refreshToken = (): Promise<TRefreshResponse> =>
   fetch(`${URL}/auth/token`, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json;charset=utf-8'
+      'Content-Type': 'application/json;charset=utf-8',
+      Accept: 'application/json'
     },
     body: JSON.stringify({
       token: localStorage.getItem('refreshToken')
@@ -72,7 +73,12 @@ type TOrdersResponse = TServerResponse<{
 }>;
 
 export const getIngredientsApi = () =>
-  fetch(`${URL}/ingredients`)
+  fetch(`${URL}/ingredients`, {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json'
+    }
+  })
     .then((res) => checkResponse<TIngredientsResponse>(res))
     .then((data) => {
       if (data?.success) return data.data;
@@ -147,7 +153,8 @@ export const registerUserApi = (data: TRegisterData) =>
   fetch(`${URL}/auth/register`, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json;charset=utf-8'
+      'Content-Type': 'application/json;charset=utf-8',
+      Accept: 'application/json'
     },
     body: JSON.stringify(data)
   })
@@ -166,7 +173,8 @@ export const loginUserApi = (data: TLoginData) =>
   fetch(`${URL}/auth/login`, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json;charset=utf-8'
+      'Content-Type': 'application/json;charset=utf-8',
+      Accept: 'application/json'
     },
     body: JSON.stringify(data)
   })
