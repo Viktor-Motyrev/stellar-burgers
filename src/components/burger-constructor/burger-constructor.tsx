@@ -1,24 +1,50 @@
-import { FC, useMemo } from 'react';
-import { TConstructorIngredient } from '@utils-types';
+import { FC, useMemo, useEffect } from 'react';
+import { TConstructorIngredient, TOrder, TUser } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
+import { useAppDispatch, useAppSelector } from '../../services/store';
+import type { RootState } from '../../services/store';
+import { createOrder, closeOrderModal } from '../../services/slices/orderSlice';
+import { resetConstructor } from '../../services/slices/constructorSlice';
+import { useLocation, useNavigate } from 'react-router-dom';
+import type { ConstructorState } from '../../services/slices/constructorSlice';
 
 export const BurgerConstructor: FC = () => {
-  /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
-  const constructorItems = {
-    bun: {
-      price: 0
-    },
-    ingredients: []
-  };
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const constructorItems = useAppSelector(
+    (state: RootState) => state.burgerConstructor
+  ) as unknown as ConstructorState;
+  const orderRequest = useAppSelector(
+    (state: RootState) => state.order.orderRequest
+  ) as unknown as boolean;
+  const orderModalData = useAppSelector(
+    (state: RootState) => state.order.orderModalData
+  ) as unknown as TOrder | null;
+  const user = useAppSelector(
+    (state: RootState) => state.user.user
+  ) as unknown as TUser | null;
 
-  const orderRequest = false;
-
-  const orderModalData = null;
+  // Сброс конструктора при успешном создании заказа
+  useEffect(() => {
+    if (orderModalData && !orderRequest) {
+      dispatch(resetConstructor());
+    }
+  }, [orderModalData, orderRequest, dispatch]);
 
   const onOrderClick = () => {
     if (!constructorItems.bun || orderRequest) return;
+    if (!user) {
+      navigate('/login', { state: { from: location } });
+      return;
+    }
+    dispatch(createOrder());
   };
-  const closeOrderModal = () => {};
+  const closeOrderModalHandler = () => {
+    dispatch(closeOrderModal());
+    // Сброс конструктора при закрытии модального окна
+    dispatch(resetConstructor());
+  };
 
   const price = useMemo(
     () =>
@@ -30,8 +56,6 @@ export const BurgerConstructor: FC = () => {
     [constructorItems]
   );
 
-  return null;
-
   return (
     <BurgerConstructorUI
       price={price}
@@ -39,7 +63,7 @@ export const BurgerConstructor: FC = () => {
       constructorItems={constructorItems}
       orderModalData={orderModalData}
       onOrderClick={onOrderClick}
-      closeOrderModal={closeOrderModal}
+      closeOrderModal={closeOrderModalHandler}
     />
   );
 };
