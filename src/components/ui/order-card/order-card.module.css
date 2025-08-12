@@ -14,6 +14,15 @@
   box-sizing: border-box;
 }
 
+.clickable {
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.clickable:hover {
+  opacity: 0.8;
+}
+
 .order_info {
   display: flex;
   justify-content: space-between;

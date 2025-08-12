@@ -42,8 +42,6 @@ export const BurgerConstructor: FC = () => {
   };
   const closeOrderModalHandler = () => {
     dispatch(closeOrderModal());
-    // Сброс конструктора при закрытии модального окна
-    dispatch(resetConstructor());
   };
 
   const price = useMemo(

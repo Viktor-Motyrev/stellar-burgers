@@ -15,11 +15,11 @@ const constructorSlice = createSlice({
   name: 'constructor',
   initialState,
   reducers: {
-    setBun(state, action: PayloadAction<TIngredient>) {
-      state.bun = { ...action.payload, id: nanoid() };
+    setBun(state, action: PayloadAction<TConstructorIngredient>) {
+      state.bun = action.payload;
     },
-    addIngredient(state, action: PayloadAction<TIngredient>) {
-      state.ingredients.push({ ...action.payload, id: nanoid() });
+    addIngredient(state, action: PayloadAction<TConstructorIngredient>) {
+      state.ingredients.push(action.payload);
     },
     removeIngredient(state, action: PayloadAction<string>) {
       state.ingredients = state.ingredients.filter(
@@ -46,6 +46,13 @@ const constructorSlice = createSlice({
     }
   }
 });
+
+// Action creators для генерации ID
+export const setBunWithId = (ingredient: TIngredient) =>
+  constructorSlice.actions.setBun({ ...ingredient, id: nanoid() });
+
+export const addIngredientWithId = (ingredient: TIngredient) =>
+  constructorSlice.actions.addIngredient({ ...ingredient, id: nanoid() });
 
 export const {
   setBun,

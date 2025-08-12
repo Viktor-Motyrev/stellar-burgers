@@ -13,13 +13,6 @@ export const Feed: FC = () => {
   useEffect(() => {
     // Загружаем ленту при первом рендере
     dispatch(fetchFeeds());
-
-    // Обновляем ленту каждые 30 секунд для имитации реального времени
-    const interval = setInterval(() => {
-      dispatch(fetchFeeds());
-    }, 30000);
-
-    return () => clearInterval(interval);
   }, [dispatch]);
 
   if (isLoading) {

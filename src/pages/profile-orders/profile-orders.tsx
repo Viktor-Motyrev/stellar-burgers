@@ -11,13 +11,6 @@ export const ProfileOrders: FC = () => {
   useEffect(() => {
     // Загружаем заказы профиля при первом рендере
     dispatch(fetchProfileOrders());
-
-    // Обновляем заказы каждые 30 секунд для имитации реального времени
-    const interval = setInterval(() => {
-      dispatch(fetchProfileOrders());
-    }, 30000);
-
-    return () => clearInterval(interval);
   }, [dispatch]);
 
   return <ProfileOrdersUI orders={orders} />;

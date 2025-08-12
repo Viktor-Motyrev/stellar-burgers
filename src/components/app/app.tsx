@@ -7,9 +7,9 @@ import { Profile } from '@pages';
 import { ProfileOrders } from '@pages';
 import { NotFound404 } from '@pages';
 import { IngredientDetails } from '@components';
-import { OrderInfo } from '@components';
+import { OrderInfo, OrderDetails } from '@components';
 import { Feed } from '@pages';
-import { IngredientModal } from '@components';
+import { IngredientModal, OrderModal } from '@components';
 import '../../index.css';
 import styles from './app.module.css';
 
@@ -30,13 +30,6 @@ const App = () => {
     dispatch(fetchIngredients());
     dispatch(getUser());
   }, [dispatch]);
-
-  // Сброс конструктора при неудачной авторизации
-  useEffect(() => {
-    if (isAuthChecked && !user) {
-      dispatch(resetConstructor());
-    }
-  }, [isAuthChecked, user, dispatch]);
 
   return (
     <div className={styles.app}>
@@ -78,19 +71,20 @@ const App = () => {
             </ProtectedRoute>
           }
         />
-        <Route path='*' element={<NotFound404 />} />
         <Route path='/ingredients/:id' element={<IngredientDetails />} />
-        <Route path='/feed/:number' element={<OrderInfo />} />
+        <Route path='/feed/:number' element={<OrderDetails />} />
         <Route
           path='/profile/orders/:number'
           element={
             <ProtectedRoute>
-              <OrderInfo />
+              <OrderDetails />
             </ProtectedRoute>
           }
         />
+        <Route path='*' element={<NotFound404 />} />
       </Routes>
       <IngredientModal />
+      <OrderModal />
     </div>
   );
 };

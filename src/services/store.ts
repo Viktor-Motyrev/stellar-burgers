@@ -13,6 +13,7 @@ import userReducer from './slices/userSlice';
 import profileOrdersReducer from './slices/profileOrdersSlice';
 import orderDetailsReducer from './slices/orderDetailsSlice';
 import ingredientModalReducer from './slices/ingredientModalSlice';
+import orderModalReducer from './slices/orderModalSlice';
 
 export const store = configureStore({
   reducer: {
@@ -23,7 +24,8 @@ export const store = configureStore({
     user: userReducer,
     profileOrders: profileOrdersReducer,
     orderDetails: orderDetailsReducer,
-    ingredientModal: ingredientModalReducer
+    ingredientModal: ingredientModalReducer,
+    orderModal: orderModalReducer
   },
   devTools: process.env.NODE_ENV !== 'production'
 });
