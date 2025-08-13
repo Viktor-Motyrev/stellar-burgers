@@ -3,7 +3,6 @@ import { getCookie } from '../../utils/cookie';
 import { TOrder } from '@utils-types';
 import { orderBurgerApi } from '@api';
 import { RootState } from '../store';
-import { resetConstructor } from './constructorSlice';
 
 export type OrderState = {
   orderRequest: boolean;

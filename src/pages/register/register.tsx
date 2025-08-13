@@ -1,7 +1,6 @@
 import { FC, SyntheticEvent, useState } from 'react';
 import { useAppDispatch } from '../../services/store';
 import { register as registerThunk } from '../../services/slices/userSlice';
-import { resetConstructor } from '../../services/slices/constructorSlice';
 import { useNavigate } from 'react-router-dom';
 import { RegisterUI } from '@ui-pages';
 
@@ -17,8 +16,6 @@ export const Register: FC = () => {
     dispatch(registerThunk({ name: userName, email, password })).then(
       (action: any) => {
         if (action.type.endsWith('fulfilled')) {
-          // Сброс конструктора при успешной регистрации
-          dispatch(resetConstructor());
           navigate('/');
         }
       }

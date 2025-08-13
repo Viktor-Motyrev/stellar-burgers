@@ -8,23 +8,25 @@ import { ProfileOrders } from '@pages';
 import { NotFound404 } from '@pages';
 import { IngredientDetails } from '@components';
 import { OrderInfo, OrderDetails } from '@components';
-import { Feed } from '@pages';
 import { IngredientModal, OrderModal } from '@components';
+import { Feed } from '@pages';
+
 import '../../index.css';
 import styles from './app.module.css';
 
 import { AppHeader } from '@components';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../services/store';
 import { fetchIngredients } from '../../services/slices/ingredientsSlice';
 import { getUser } from '../../services/slices/userSlice';
-import { resetConstructor } from '../../services/slices/constructorSlice';
 import ProtectedRoute from '../protected-route/protected-route';
 
 const App = () => {
   const dispatch = useAppDispatch();
+  const location = useLocation();
   const { user, isAuthChecked } = useAppSelector((state) => state.user);
+  const background = location.state && location.state.background;
 
   useEffect(() => {
     dispatch(fetchIngredients());
@@ -34,7 +36,7 @@ const App = () => {
   return (
     <div className={styles.app}>
       <AppHeader />
-      <Routes>
+      <Routes location={background || location}>
         <Route path='/' element={<ConstructorPage />} />
         <Route path='/feed' element={<Feed />} />
         <Route
@@ -83,8 +85,22 @@ const App = () => {
         />
         <Route path='*' element={<NotFound404 />} />
       </Routes>
-      <IngredientModal />
-      <OrderModal />
+
+      {/* Модальные окна отображаются только при наличии background */}
+      {background && (
+        <Routes>
+          <Route path='/ingredients/:id' element={<IngredientModal />} />
+          <Route path='/feed/:number' element={<OrderModal />} />
+          <Route
+            path='/profile/orders/:number'
+            element={
+              <ProtectedRoute>
+                <OrderModal />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      )}
     </div>
   );
 };

@@ -6,6 +6,7 @@ import { useAppSelector } from '../../services/store';
 import type { RootState } from '../../services/store';
 import { NotFound404 } from '@pages';
 import { IngredientModal } from '@components';
+import styles from '../app/app.module.css';
 
 export const IngredientDetails: FC = () => {
   const { id } = useParams();
@@ -32,5 +33,12 @@ export const IngredientDetails: FC = () => {
     return <NotFound404 />;
   }
 
-  return <IngredientDetailsUI ingredientData={ingredientData} />;
+  return (
+    <div className={styles.detailPageWrap}>
+      <h1 className={`text text_type_main-large ${styles.detailHeader}`}>
+        Детали ингредиента
+      </h1>
+      <IngredientDetailsUI ingredientData={ingredientData} />
+    </div>
+  );
 };

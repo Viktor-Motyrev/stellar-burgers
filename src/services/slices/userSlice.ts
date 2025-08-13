@@ -10,7 +10,6 @@ import {
   TRegisterData
 } from '@api';
 import { setCookie, deleteCookie } from '../../utils/cookie';
-import { resetConstructor } from './constructorSlice';
 
 export type UserState = {
   user: TUser | null;

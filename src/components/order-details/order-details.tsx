@@ -8,6 +8,7 @@ import type { RootState } from '../../services/store';
 import { fetchOrderByNumber } from '../../services/slices/orderDetailsSlice';
 import { NotFound404 } from '@pages';
 import { OrderModal } from '@components';
+import styles from '../app/app.module.css';
 
 export const OrderDetails: FC = () => {
   const { number } = useParams();
@@ -91,5 +92,12 @@ export const OrderDetails: FC = () => {
     return <Preloader />;
   }
 
-  return <OrderInfoUI orderInfo={orderInfo} />;
+  return (
+    <div className={styles.detailPageWrap}>
+      <h1 className={`text text_type_main-large ${styles.detailHeader}`}>
+        #{String(orderData.number).padStart(6, '0')}
+      </h1>
+      <OrderInfoUI orderInfo={orderInfo} />
+    </div>
+  );
 };

@@ -27,8 +27,8 @@ export const OrderModal: FC = () => {
   );
   const { handleModalClose } = useModalNavigation();
 
-  // Определяем, нужно ли показать модальное окно
-  const shouldShowModal = isOpen || location.state?.background;
+  // Показываем модальное окно если есть background state или оно открыто через Redux
+  const shouldShowModal = location.state?.background || isOpen;
 
   useEffect(() => {
     if (shouldShowModal && number) {
@@ -89,7 +89,7 @@ export const OrderModal: FC = () => {
 
   return (
     <ModalUI
-      title={`Заказ #${String(orderData.number).padStart(6, '0')}`}
+      title={`#${String(orderData.number).padStart(6, '0')}`}
       onClose={handleClose}
     >
       <OrderInfoUI orderInfo={orderInfo} />

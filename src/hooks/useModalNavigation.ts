@@ -18,42 +18,22 @@ export const useModalNavigation = () => {
 
   const navigateToIngredient = useCallback(
     (ingredient: TIngredient) => {
-      // Если мы уже находимся на главной странице, открываем модальное окно
-      // Иначе переходим на отдельную страницу
-      const isOnMainPage = location.pathname === '/';
-
-      if (isOnMainPage) {
-        // Открываем модальное окно
-        dispatch(openIngredientModal(ingredient));
-      } else {
-        // Переходим на отдельную страницу
-        navigate(`/ingredients/${ingredient._id}`, {
-          state: { background: location }
-        });
-      }
+      // Всегда открываем модальное окно поверх текущей страницы
+      dispatch(openIngredientModal(ingredient));
+      navigate(`/ingredients/${ingredient._id}`, {
+        state: { background: location }
+      });
     },
     [navigate, location, dispatch]
   );
 
   const navigateToOrder = useCallback(
     (order: TOrder, basePath: string) => {
-      // Определяем, находимся ли мы на странице с заказами
-      const isOnOrdersPage =
-        location.pathname === '/feed' ||
-        location.pathname === '/profile/orders';
-
-      if (isOnOrdersPage) {
-        // Открываем модальное окно и обновляем URL
-        dispatch(openOrderModal(order));
-        navigate(`${basePath}/${order.number}`, {
-          state: { background: location }
-        });
-      } else {
-        // Переходим на отдельную страницу
-        navigate(`${basePath}/${order.number}`, {
-          state: { background: location }
-        });
-      }
+      // Всегда открываем модальное окно поверх текущей страницы
+      dispatch(openOrderModal(order));
+      navigate(`${basePath}/${order.number}`, {
+        state: { background: location }
+      });
     },
     [navigate, location, dispatch]
   );
