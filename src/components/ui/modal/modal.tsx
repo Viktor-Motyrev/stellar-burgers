@@ -6,13 +6,17 @@ import { CloseIcon } from '@zlden/react-developer-burger-ui-components';
 import { TModalUIProps } from './type';
 import { ModalOverlayUI } from '@ui';
 
-export const ModalUI: FC<TModalUIProps> = memo(
-  ({ title, onClose, children }) => (
+export const ModalUI: FC<TModalUIProps & { 'data-cy'?: string }> = memo(
+  ({ title, onClose, children, ...props }) => (
     <>
-      <div className={styles.modal}>
+      <div className={styles.modal} data-cy={props['data-cy'] || 'modal'}>
         <div className={styles.header}>
           <h3 className='text text_type_main-large'>{title}</h3>
-          <button className={styles.button} type='button'>
+          <button
+            className={styles.button}
+            type='button'
+            data-cy='modal-close-button'
+          >
             <CloseIcon type='primary' onClick={onClose} />
           </button>
         </div>
