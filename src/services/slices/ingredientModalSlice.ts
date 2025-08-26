@@ -6,7 +6,7 @@ export type IngredientModalState = {
   ingredient: TIngredient | null;
 };
 
-const initialState: IngredientModalState = {
+export const initialState: IngredientModalState = {
   isOpen: false,
   ingredient: null
 };

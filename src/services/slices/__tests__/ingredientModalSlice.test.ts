@@ -1,14 +1,10 @@
 import ingredientModalReducer, {
   openIngredientModal,
   closeIngredientModal,
-  IngredientModalState
+  IngredientModalState,
+  initialState
 } from '../ingredientModalSlice';
 import { TIngredient } from '../../../utils/types';
-
-const initialState: IngredientModalState = {
-  isOpen: false,
-  ingredient: null
-};
 
 const mockIngredient: TIngredient = {
   _id: '643d69a5c3f7b9001cfa093c',

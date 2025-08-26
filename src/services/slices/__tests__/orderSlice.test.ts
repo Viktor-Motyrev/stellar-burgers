@@ -1,15 +1,10 @@
 import orderReducer, {
   createOrder,
   closeOrderModal,
-  OrderState
+  OrderState,
+  initialState
 } from '../orderSlice';
 import { TOrder } from '../../../utils/types';
-
-const initialState: OrderState = {
-  orderRequest: false,
-  orderModalData: null,
-  error: null
-};
 
 const mockOrder: TOrder = {
   _id: '64c3b71c9b885a0001f8b7e9',

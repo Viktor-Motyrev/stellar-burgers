@@ -1,16 +1,9 @@
 import feedReducer, {
   fetchFeeds,
-  FeedState
+  FeedState,
+  initialState
 } from '../feedSlice';
 import { TOrdersData } from '../../../utils/types';
-
-const initialState: FeedState = {
-  orders: [],
-  total: 0,
-  totalToday: 0,
-  isLoading: false,
-  error: null
-};
 
 const mockFeedData: TOrdersData = {
   orders: [

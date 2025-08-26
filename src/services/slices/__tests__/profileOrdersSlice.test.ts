@@ -1,14 +1,9 @@
 import profileOrdersReducer, {
   fetchProfileOrders,
-  ProfileOrdersState
+  ProfileOrdersState,
+  initialState
 } from '../profileOrdersSlice';
 import { TOrder } from '../../../utils/types';
-
-const initialState: ProfileOrdersState = {
-  orders: [],
-  isLoading: false,
-  error: null
-};
 
 const mockOrders: TOrder[] = [
   {

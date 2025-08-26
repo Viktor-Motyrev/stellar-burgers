@@ -1,14 +1,10 @@
 import orderModalReducer, {
   openOrderModal,
   closeOrderModal,
-  OrderModalState
+  OrderModalState,
+  initialState
 } from '../orderModalSlice';
 import { TOrder } from '../../../utils/types';
-
-const initialState: OrderModalState = {
-  isOpen: false,
-  order: null
-};
 
 const mockOrder: TOrder = {
   _id: '64c3b71c9b885a0001f8b7e9',

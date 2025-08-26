@@ -1,15 +1,10 @@
 import ingredientsReducer, {
   fetchIngredients,
   setIngredients,
-  IngredientsState
+  IngredientsState,
+  initialState
 } from '../ingredientsSlice';
 import { TIngredient } from '../../../utils/types';
-
-const initialState: IngredientsState = {
-  items: [],
-  isLoading: false,
-  error: null
-};
 
 const mockIngredients: TIngredient[] = [
   {

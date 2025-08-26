@@ -1,15 +1,10 @@
 import orderDetailsReducer, {
   fetchOrderByNumber,
   clearCurrentOrder,
-  OrderDetailsState
+  OrderDetailsState,
+  initialState
 } from '../orderDetailsSlice';
 import { TOrder } from '../../../utils/types';
-
-const initialState: OrderDetailsState = {
-  currentOrder: null,
-  isLoading: false,
-  error: null
-};
 
 const mockOrder: TOrder = {
   _id: '64c3b71c9b885a0001f8b7e9',

@@ -6,7 +6,7 @@ export type OrderModalState = {
   order: TOrder | null;
 };
 
-const initialState: OrderModalState = {
+export const initialState: OrderModalState = {
   isOpen: false,
   order: null
 };

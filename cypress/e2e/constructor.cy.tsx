@@ -1,5 +1,7 @@
 /// <reference types="../support/index" />
 
+import { SELECTORS } from '../support/selectors';
+
 describe('Конструктор бургера', () => {
   beforeEach(() => {
     // Перехватываем запрос на получение ингредиентов
@@ -24,78 +26,116 @@ describe('Конструктор бургера', () => {
   describe('Добавление ингредиентов в конструктор', () => {
     it('должен добавить булку в конструктор', () => {
       // Добавление булок
-      cy.get('[data-cy="ingredients-bun"]').first().within(() => {
+      cy.get(SELECTORS.INGREDIENTS_BUN).first().within(() => {
         cy.get('button').contains('Добавить').click();
       });
 
-      cy.get('[data-cy="constructor-bun-top"]').should('contain', 'Краторная булка N-200i (верх)');
-      cy.get('[data-cy="constructor-bun-bottom"]').should('contain', 'Краторная булка N-200i (низ)');
+      cy.get(SELECTORS.CONSTRUCTOR_BUN_TOP).should('contain', 'Краторная булка N-200i (верх)');
+      cy.get(SELECTORS.CONSTRUCTOR_BUN_BOTTOM).should('contain', 'Краторная булка N-200i (низ)');
     });
 
     it('должен добавить начинку в конструктор', () => {
       // Добавление начинок
-      cy.get('[data-cy="ingredients-main"]').first().within(() => {
+      cy.get(SELECTORS.INGREDIENTS_MAIN).first().within(() => {
         cy.get('button').contains('Добавить').click();
       });
 
-      cy.get('[data-cy="constructor-ingredients"]').should('contain', 'Биокотлета из марсианской Магнолии');
+      cy.get(SELECTORS.CONSTRUCTOR_INGREDIENTS).should('contain', 'Биокотлета из марсианской Магнолии');
     });
   });
 
   describe('Модальные окна ингредиентов', () => {
     it('должен открыть модальное окно при клике на ингредиент', () => {
-      cy.get('[data-cy="ingredient-link"]').first().click();
-      cy.get('[data-cy="modal"]').should('be.visible');
-      cy.get('[data-cy="ingredient-details"]').should('be.visible');
+      cy.get(SELECTORS.INGREDIENT_LINK).first().click();
+      cy.get(SELECTORS.MODAL).should('be.visible');
+      cy.get(SELECTORS.INGREDIENT_DETAILS).should('be.visible');
     });
 
     it('должен закрыть модальное окно по клику на крестик', () => {
-      cy.get('[data-cy="ingredient-link"]').first().click();
-      cy.get('[data-cy="modal"]').should('be.visible');
+      cy.get(SELECTORS.INGREDIENT_LINK).first().click();
+      cy.get(SELECTORS.MODAL).should('be.visible');
 
-      cy.get('[data-cy="modal-close-button"]').click();
-      cy.get('[data-cy="modal"]').should('not.exist');
+      cy.get(SELECTORS.MODAL_CLOSE_BUTTON).click();
+      cy.get(SELECTORS.MODAL).should('not.exist');
     });
 
     it('должен закрыть модальное окно по клику на оверлей', () => {
-      cy.get('[data-cy="ingredient-link"]').first().click();
-      cy.get('[data-cy="modal"]').should('be.visible');
+      cy.get(SELECTORS.INGREDIENT_LINK).first().click();
+      cy.get(SELECTORS.MODAL).should('be.visible');
 
-      cy.get('[data-cy="modal-overlay"]').click({ force: true });
-      cy.get('[data-cy="modal"]').should('not.exist');
+      cy.get(SELECTORS.MODAL_OVERLAY).click({ force: true });
+      cy.get(SELECTORS.MODAL).should('not.exist');
+    });
+
+    it('должен закрыть модальное окно по нажатию клавиши Escape', () => {
+      cy.get(SELECTORS.INGREDIENT_LINK).first().click();
+      cy.get(SELECTORS.MODAL).should('be.visible');
+
+      cy.get('body').type('{esc}');
+      cy.get(SELECTORS.MODAL).should('not.exist');
     });
   });
 
   describe('Создание заказа', () => {
     it('должен успешно создать заказ', () => {
       // Собираем бургер
-      cy.get('[data-cy="ingredients-bun"]').first().within(() => {
+      cy.get(SELECTORS.INGREDIENTS_BUN).first().within(() => {
         cy.get('button').contains('Добавить').click();
       });
       
-      cy.get('[data-cy="ingredients-main"]').first().within(() => {
+      cy.get(SELECTORS.INGREDIENTS_MAIN).first().within(() => {
         cy.get('button').contains('Добавить').click();
       });
 
       // Вызывается клик по кнопке «Оформить заказ»
-      cy.get('[data-cy="order-button"]').click();
+      cy.get(SELECTORS.ORDER_BUTTON).click();
 
       // Ждем создания заказа
       cy.wait('@createOrder');
 
       // Проверяется, что модальное окно открылось и номер заказа верный
-      cy.get('[data-cy="order-modal"]').should('be.visible');
-      cy.get('[data-cy="order-number"]').should('contain', '12345');
+      cy.get(SELECTORS.ORDER_MODAL).should('be.visible');
+      cy.get(SELECTORS.ORDER_NUMBER).should('contain', '12345');
 
       // Закрывается модальное окно и проверяется успешность закрытия
-      cy.get('[data-cy="modal-close-button"]').click();
-      cy.get('[data-cy="order-modal"]').should('not.exist');
+      cy.get(SELECTORS.MODAL_CLOSE_BUTTON).click();
+      cy.get(SELECTORS.ORDER_MODAL).should('not.exist');
 
       // Проверяется, что конструктор пуст
-      cy.get('[data-cy="constructor-bun-top"]').should('not.exist');
-      cy.get('[data-cy="constructor-bun-bottom"]').should('not.exist');
-      cy.get('[data-cy="constructor-empty-bun"]').should('be.visible');
-      cy.get('[data-cy="constructor-empty-filling"]').should('be.visible');
+      cy.get(SELECTORS.CONSTRUCTOR_BUN_TOP).should('not.exist');
+      cy.get(SELECTORS.CONSTRUCTOR_BUN_BOTTOM).should('not.exist');
+      cy.get(SELECTORS.CONSTRUCTOR_EMPTY_BUN).should('be.visible');
+      cy.get(SELECTORS.CONSTRUCTOR_EMPTY_FILLING).should('be.visible');
+    });
+
+    it('должен закрыть модальное окно заказа по нажатию клавиши Escape', () => {
+      // Собираем бургер
+      cy.get(SELECTORS.INGREDIENTS_BUN).first().within(() => {
+        cy.get('button').contains('Добавить').click();
+      });
+      
+      cy.get(SELECTORS.INGREDIENTS_MAIN).first().within(() => {
+        cy.get('button').contains('Добавить').click();
+      });
+
+      // Вызывается клик по кнопке «Оформить заказ»
+      cy.get(SELECTORS.ORDER_BUTTON).click();
+
+      // Ждем создания заказа
+      cy.wait('@createOrder');
+
+      // Проверяется, что модальное окно открылось
+      cy.get(SELECTORS.ORDER_MODAL).should('be.visible');
+
+      // Закрываем модальное окно по Escape
+      cy.get('body').type('{esc}');
+      cy.get(SELECTORS.ORDER_MODAL).should('not.exist');
+
+      // Проверяется, что конструктор пуст
+      cy.get(SELECTORS.CONSTRUCTOR_BUN_TOP).should('not.exist');
+      cy.get(SELECTORS.CONSTRUCTOR_BUN_BOTTOM).should('not.exist');
+      cy.get(SELECTORS.CONSTRUCTOR_EMPTY_BUN).should('be.visible');
+      cy.get(SELECTORS.CONSTRUCTOR_EMPTY_FILLING).should('be.visible');
     });
   });
 });
