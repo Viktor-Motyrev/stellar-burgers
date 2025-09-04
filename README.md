@@ -106,10 +106,4 @@ stellar-burgers/
 - 📧 Email: viktor.motyrev.dev@gmail.com
 - 💼 GitHub: [github.com/Viktor-Motyrev](https://github.com/Viktor-Motyrev)
 
-## 📄 Лицензия
 
-Этот проект создан в образовательных целях и демонстрирует навыки frontend-разработки.
-
----
-
-⭐ Если проект был полезен, поставьте звезду!
